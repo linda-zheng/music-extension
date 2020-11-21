@@ -20,17 +20,36 @@ function parsePage() {
     }
   }
 
-  console.log(frequency);
+  let sorted = Object.entries(frequency).sort((a, b) => b[1] - a[1]);
 
-  let searchString = '';
-  for (const key of Object.keys(frequency)){
-    if (frequency[key] > 5 && frequency[key] < 10) {
-      console.log(key, frequency[key]);
-      searchString += "+" + key;
+  let searchString = sorted.slice(0, 3).map(([key, freq]) => key).join('+');
+
+  console.log(searchString);
+  const options = {
+    // mode: 'no-cors',
+    headers: {
+      Origin: 'X-Requested-With'
     }
-  }
+  };
 
-  console.log(searchString)
+  const proxyurl = "https://cors-anywhere.herokuapp.com/";
+  // fetch(`https://www.lyricfinder.org/search/lyrics/${searchString}`).then(res => {/search?searchtype=lyrics&query=
+  fetch(`${proxyurl}https://www.lyricfinder.org/search/lyrics/${searchString}`, options)
+    .then(res => res.text())
+    .then((res) => {
+      // console.log(res);
+      var el = document.createElement( 'html' );
+      el.innerHTML = res;
+
+      // let container = el.querySelectorAll('.container'); // Live NodeList of your anchor elements
+      let listSongs = el.querySelectorAll('.song-title-link');
+      listSongs = Array.from(listSongs).slice(0, 5).map(item => item.textContent.trim());
+      let listArtists = el.querySelectorAll('.artist-link');
+      listArtists = Array.from(listArtists).slice(0, 5).map(item => item.textContent.trim());
+
+      console.log(listSongs, listArtists);
+    }
+  )
 }
 
 parsePage()

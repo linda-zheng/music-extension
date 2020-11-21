@@ -7,6 +7,7 @@
     "scripts": ["background.js"],
     "persistent": false
   },
+  "content_security_policy": "script-src 'self' https://code.jquery.com/jquery-3.5.1.slim.min.js https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js; object-src 'self'",
   "permissions": ["activeTab","declarativeContent", "storage", "*://*.spotify.com/"],
   "page_action": {
     "default_popup": "index.html"
