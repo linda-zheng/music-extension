@@ -7,7 +7,6 @@ const VALID_DEVICE_TYPES = ['Computer'];
 const btnPlay = document.getElementById('play-btn');
 const btnPause = document.getElementById('pause-btn');
 
-
 btnPause.onclick = async function (e) {
     console.log('hi')
     let token = await getAccessToken();
@@ -20,3 +19,16 @@ btnPause.onclick = async function (e) {
 btnPlay.onclick = function (e) {
     //
 };
+
+const btnGenerate = document.getElementById("generatePlaylist");
+btnGenerate.addEventListener("click", function() {
+  let payload = {
+    event: 'parsePage'
+  }
+  chrome.runtime.sendMessage(payload);
+  
+  // code use with declaratively injecting content script
+  // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+  //   chrome.tabs.sendMessage(tabs[0].id, payload);
+  // })
+}, false);
