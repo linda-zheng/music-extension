@@ -7,7 +7,7 @@
     "scripts": ["background.js"],
     "persistent": false
   },
-  "permissions": ["activeTab","declarativeContent", "storage"],
+  "permissions": ["activeTab","declarativeContent", "storage", "*://*.spotify.com/"],
   "page_action": {
     "default_popup": "index.html"
   }
