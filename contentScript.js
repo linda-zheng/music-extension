@@ -1,6 +1,11 @@
 function parsePage() {
   console.log('run script');
-  document.body.style.backgroundColor="orange";
+  const pElements = document.querySelectorAll('p');
+  const textArray = Array.from(pElements)
+    .flatMap(
+      p => p.textContent.split(/(?:\s|\[.*?\]|\.|!|\?)+/).filter(s => s !== "")
+    );
+  console.log(textArray)
 }
 
 parsePage()
