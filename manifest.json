@@ -1,5 +1,5 @@
 {
-  "name": "Hacky Times",
+  "name": "Music Extension",
   "version": "1.0",
   "description": "Music on the go!",
   "manifest_version": 2,
@@ -7,7 +7,6 @@
     "scripts": ["background.js"],
     "persistent": false
   },
-  "background_page": "index.html",
   "permissions": ["declarativeContent", "storage"],
   "page_action": {
     "default_popup": "index.html"
