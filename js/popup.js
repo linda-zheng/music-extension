@@ -1,4 +1,4 @@
-import { isPlayerOpen, playerPause, playerResume, isPlayerPlaying, playerCurrentSong, playerPrev, playerNext } from './spotify-controller.js';
+import { isPlayerOpen, playerPause, playerResume, isPlayerPlaying, playerCurrentSong, playerPrev, playerPlay, playerNext } from './spotify-controller.js';
 
 const alert = document.getElementById('open-player-notif');
 const btnResume = document.getElementById('resume-btn');
@@ -121,6 +121,8 @@ chrome.runtime.onMessage.addListener(
             listArtists = Array.from(listArtists).slice(0, 5).map(item => item.textContent.trim());
 
             console.log(listSongs, listArtists);
+            let songs = listSongs.map((song, idx) => ({ name: song, artist: listArtists[idx] }));
+            playerPlay(songs);
           }
         )
       })
