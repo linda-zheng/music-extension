@@ -14,8 +14,8 @@ chrome.runtime.onInstalled.addListener(function() {
 
 // don't need if declaratively injecting content script
 chrome.runtime.onMessage.addListener(
-  function(message, sender, callback) {
-    // console.log(`background: ${JSON.stringify(message)}, ${JSON.stringify(sender)}, ${JSON.stringify(callback)}`);
+  function(message) { //sender, callback) {
+    console.log(`background: ${JSON.stringify(message)}`);
     // sender example: {"id":"hligmjmffggjjpbnilddcnmmpecgpglc","url":"chrome-extension://hligmjmffggjjpbnilddcnmmpecgpglc/index.html","origin":"chrome-extension://hligmjmffggjjpbnilddcnmmpecgpglc"}
     if (message.event == 'parsePage'){
       chrome.tabs.executeScript({
