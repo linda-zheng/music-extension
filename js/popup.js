@@ -1,38 +1,51 @@
 import { isPlayerOpen, playerPlay, playerPause, playerResume, isPlayerPlaying } from './spotify-controller.js';
 
 const alert = document.getElementById('open-player-notif');
+const btnResume = document.getElementById('resume-btn');
+const btnPause = document.getElementById('pause-btn');
+// const btnQueue = document.getElementById('queue-btn');
 
-// do not show alert at first
+// do not initially show
 alert.style.display = 'none';
 
 isPlayerOpen().then((isOpen) => {
   alert.style.display = isOpen ? 'none' : '';
 })
 
-const btnResume = document.getElementById('resume-btn');
-const btnPause = document.getElementById('pause-btn');
-const btnQueue = document.getElementById('queue-btn');
+const togglePlayPauseIcons = (isPlaying) => {
+  if (isPlaying) {
+    btnPause.classList.remove('d-none');
+    btnResume.classList.add('d-none');
+  } else {
+    btnResume.classList.remove('d-none');
+    btnPause.classList.add('d-none');
+  }
+}
+
+isPlayerPlaying().then(togglePlayPauseIcons);
 
 btnPause.onclick = async function (e) {
   console.log('pause');
+  togglePlayPauseIcons(false);
   playerPause();
 };
 
 btnResume.onclick = function (e) {
   console.log('resume');
+  togglePlayPauseIcons(true);
   playerResume();
 };
 
-btnQueue.onclick = function (e) {
-  console.log('queue');
-  const songs = [
-      {name: 'love me or leave me', artist: 'day6'},
-      {name: 'tick tock', artist: 'day6'},
-      {name: 'zombie', artist: 'day6'},
-      {name: 'you were beautiful', artist: 'day6'},
-  ]
-  playerPlay(songs);
-};
+// btnQueue.onclick = function (e) {
+//   console.log('queue');
+//   const songs = [
+//       {name: 'love me or leave me', artist: 'day6'},
+//       {name: 'tick tock', artist: 'day6'},
+//       {name: 'zombie', artist: 'day6'},
+//       {name: 'you were beautiful', artist: 'day6'},
+//   ]
+//   playerPlay(songs);
+// };
 
 const btnGenerate = document.getElementById("generatePlaylist");
 btnGenerate.addEventListener("click", function() {

@@ -10,7 +10,6 @@ export async function isPlayerOpen() {
 export async function isPlayerPlaying() {
     const token = await getAccessToken();
     return await getStatus(token.accessToken);
-    
 }
 
 export async function playerPause() {
