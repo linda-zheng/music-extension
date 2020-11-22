@@ -1,6 +1,7 @@
 import { isPlayerOpen, playerPause, playerResume, isPlayerPlaying, playerCurrentSong, playerPrev, playerPlay, playerNext } from './spotify-controller.js';
 
 const alert = document.getElementById('open-player-notif');
+const musicPlayer = document.getElementById('music-player');
 const btnResume = document.getElementById('resume-btn');
 const btnPause = document.getElementById('pause-btn');
 // const btnQueue = document.getElementById('queue-btn');
@@ -9,7 +10,16 @@ const btnPause = document.getElementById('pause-btn');
 alert.style.display = 'none';
 
 isPlayerOpen().then((isOpen) => {
-  alert.style.display = isOpen ? 'none' : '';
+  if (isOpen) {
+    alert.style.display = 'none';
+    musicPlayer.classList.remove('d-none');
+    musicPlayer.classList.add('d-flex');
+    updateCurrentSong();
+  } else {
+    alert.style.display = '';
+    musicPlayer.classList.remove('d-flex');
+    musicPlayer.classList.add('d-none');
+  }
 })
 
 const togglePlayPauseIcons = (isPlaying) => {
@@ -23,7 +33,6 @@ const togglePlayPauseIcons = (isPlaying) => {
 }
 
 isPlayerPlaying().then(togglePlayPauseIcons);
-updateCurrentSong();
 
 const btnPrev = document.getElementById('prev-btn');
 const btnNext = document.getElementById('next-btn');
