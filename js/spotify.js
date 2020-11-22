@@ -98,6 +98,10 @@ export async function search(track, artist, accessToken) {
 
 export async function queue(uri, deviceId, accessToken) {
     const url = `${END_POINT}/v1/me/player/queue?uri=${uri}&device_id=${deviceId}`;
+    
+    if (uri.length == 0) {
+      return;
+    }
 
     try {
         const result = await fetch(url, {
