@@ -12,7 +12,7 @@
         .shadow {
           box-shadow: 0 0 10px black inset;
         }
-        .btn-primary-spacing {
+        .btn-primary-spacing, .right-spacing  {
           margin-right: 2px;
         }
       </style>
@@ -27,9 +27,20 @@
           Well we've got the thing for you!<br>
           Generate a playlist today that uses YOUR current webpage to find unique tunes.
         </p>
-        <button id="generatePlaylist" class="btn btn-primary submit">Generate New Playlist</button>
       </div>
-
+      <hr />
+      <form id="generatePlaylist">
+        <div class="form-group">
+          <label for="searchTypeSelect">Select a search type</label>
+          <select class="form-control" id="searchTypeSelect">
+            <option value="tracks">Track Name</option>
+            <option value="lyrics">Lyrics</option>
+          </select>
+        </div>
+        <input class="btn btn-primary submit" type="submit" value="Generate New Playlist">
+        <div id="generateLoading" class="d-none mt-2">Loading...</div>
+      </form>
+      <hr />
       <div class="player-body">
         <div id="open-player-notif" class="player-notif alert alert-danger" role="alert">
           <span>
@@ -42,10 +53,12 @@
           </span>
         </div>
         <div class="d-flex justify-content-around">
-          <div id="player-song-description">
-            <div class="font-weight-bold" id="player-song-name"></div>
-            <div class="font-italic" id="player-artist-name"></div>
-            <div class="justify-content-around">
+          <div class="d-flex flex-column justify-content-between right-spacing">
+            <div id="player-song-description">
+              <div class="font-weight-bold" id="player-song-name">Song</div>
+              <div class="font-italic" id="player-artist-name">Artist</div>
+            </div>
+            <div class="d-flex justify-content-around">
               <button class="btn btn-light btn-primary-spacing" id="prev-btn">
                 <svg id="prev-icon" height="24" viewBox="0 0 24 24" width="24" style="fill: currentColor;">
                   <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path>

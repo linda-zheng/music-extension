@@ -1,4 +1,4 @@
-import { isPlayerOpen, playerPlay, playerPause, playerResume, isPlayerPlaying, playerCurrentSong, playerPrev, playerNext } from './spotify-controller.js';
+import { isPlayerOpen, playerPause, playerResume, isPlayerPlaying, playerCurrentSong, playerPrev, playerPlay, playerNext } from './spotify-controller.js';
 
 const alert = document.getElementById('open-player-notif');
 const btnResume = document.getElementById('resume-btn');
@@ -67,8 +67,19 @@ btnNext.onclick = async function (e) {
   await updateCurrentSong();
 };
 
-const btnGenerate = document.getElementById("generatePlaylist");
-btnGenerate.addEventListener("click", function() {
+const btnGenerate = document.getElementById('generatePlaylist');
+btnGenerate.addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  chrome.storage.sync.set({
+    searchType: document.getElementById('searchTypeSelect').value
+  }, function() {
+    console.log('Saved search type');
+  });
+
+  const loadingEl = document.getElementById('generateLoading');
+  loadingEl.setAttribute('class', '');
+
   let payload = {
     event: 'parsePage'
   }
@@ -87,29 +98,41 @@ chrome.runtime.onMessage.addListener(
     if (message.event == 'parsePageDone'){
       console.log('parsePage data received');
 
-      const searchType = 'lyrics'
       const options = {
         // mode: 'no-cors',
         headers: {
           Origin: 'X-Requested-With'
         }
       };
-    
-      const proxyurl = "https://cors-anywhere.herokuapp.com/";
-      fetch(`${proxyurl}https://www.lyricfinder.org/search/${searchType}/${message.data.searchString}`, options)
-        .then(res => res.text())
-        .then((res) => {
-          var el = document.createElement( 'html' );
-          el.innerHTML = res;
-    
-          let listSongs = el.querySelectorAll('.song-title-link');
-          listSongs = Array.from(listSongs).slice(0, 5).map(item => item.textContent.trim());
-          let listArtists = el.querySelectorAll('.artist-link');
-          listArtists = Array.from(listArtists).slice(0, 5).map(item => item.textContent.trim());
 
-          console.log(listSongs, listArtists);
+      chrome.storage.sync.get(['searchType'], async function(result) {
+        const searchType = result.searchType;
+        let searchString = message.data.searchString;
+        if (searchType !== 'lyrics') {
+          searchString = searchString.slice(0, searchString.indexOf('+'))
         }
-      )
+
+        const proxyurl = 'https://cors-anywhere.herokuapp.com/';
+        fetch(`${proxyurl}https://www.lyricfinder.org/search/${searchType}/${searchString}`, options)
+          .then(res => res.text())
+          .then((res) => {
+            var el = document.createElement( 'html' );
+            el.innerHTML = res;
+      
+            let listSongs = el.querySelectorAll('.song-title-link');
+            listSongs = Array.from(listSongs).slice(0, 5).map(item => item.textContent.trim());
+            let listArtists = el.querySelectorAll('.artist-link');
+            listArtists = Array.from(listArtists).slice(0, 5).map(item => item.textContent.trim());
+
+            console.log(listSongs, listArtists);
+            let songs = listSongs.map((song, idx) => ({ name: song, artist: listArtists[idx] }));
+            playerPlay(songs).then(() => {
+              const loadingEl = document.getElementById('generateLoading');
+              loadingEl.setAttribute('class', 'd-none');
+            });
+          }
+        )
+      })
     }
   }
 );
