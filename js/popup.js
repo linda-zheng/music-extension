@@ -1,9 +1,15 @@
 import { isPlayerOpen, playerPause, playerResume, isPlayerPlaying, playerCurrentSong, playerPrev, playerPlay, playerNext } from './spotify-controller.js';
 
 const alert = document.getElementById('open-player-notif');
+
 const btnResume = document.getElementById('resume-btn');
 const btnPause = document.getElementById('pause-btn');
-// const btnQueue = document.getElementById('queue-btn');
+const btnPrev = document.getElementById('prev-btn');
+const btnNext = document.getElementById('next-btn');
+
+const playerSongName = document.getElementById('player-song-name');
+const playerArtistName = document.getElementById('player-artist-name');
+const playerSongImage = document.getElementById('player-song-image');
 
 // do not initially show
 alert.style.display = 'none';
@@ -25,13 +31,6 @@ const togglePlayPauseIcons = (isPlaying) => {
 isPlayerPlaying().then(togglePlayPauseIcons);
 updateCurrentSong();
 
-const btnPrev = document.getElementById('prev-btn');
-const btnNext = document.getElementById('next-btn');
-
-const playerSongName = document.getElementById('player-song-name');
-const playerArtistName = document.getElementById('player-artist-name');
-const playerSongImage = document.getElementById('player-song-image');
-
 async function updateCurrentSong() {
   const currentSong = await playerCurrentSong();
   console.log(currentSong);
@@ -39,6 +38,8 @@ async function updateCurrentSong() {
   playerArtistName.innerHTML = currentSong.artist;
   playerSongImage.src = currentSong.image;
 }
+
+updateCurrentSong();
 
 btnPause.onclick = async function (e) {
   console.log('pause');
@@ -78,7 +79,7 @@ btnGenerate.addEventListener('submit', function(event) {
   });
 
   const loadingEl = document.getElementById('generateLoading');
-  loadingEl.setAttribute('class', '');
+  loadingEl.classList.remove('d-none');
 
   let payload = {
     event: 'parsePage'
@@ -93,8 +94,7 @@ btnGenerate.addEventListener('submit', function(event) {
 
 chrome.runtime.onMessage.addListener(
   function(message, sender, callback) {
-    // console.log(`background: ${JSON.stringify(message)}, ${JSON.stringify(sender)}, ${JSON.stringify(callback)}`);
-    // sender example: {"id":"hligmjmffggjjpbnilddcnmmpecgpglc","url":"chrome-extension://hligmjmffggjjpbnilddcnmmpecgpglc/index.html","origin":"chrome-extension://hligmjmffggjjpbnilddcnmmpecgpglc"
+    console.log(`popover ${JSON.stringify(message)}`)
     if (message.event == 'parsePageDone'){
       console.log('parsePage data received');
 
@@ -128,7 +128,9 @@ chrome.runtime.onMessage.addListener(
             let songs = listSongs.map((song, idx) => ({ name: song, artist: listArtists[idx] }));
             playerPlay(songs).then(() => {
               const loadingEl = document.getElementById('generateLoading');
-              loadingEl.setAttribute('class', 'd-none');
+              loadingEl.classList.add('d-none');
+              updateCurrentSong();
+              togglePlayPauseIcons(true);
             });
           }
         )
