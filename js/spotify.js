@@ -55,6 +55,23 @@ export async function getAccessToken(scope='user-modify-playback-state') {
     return token;
 }
 
+export async function getStatus(accessToken) {
+  const url = `${END_POINT}/v1/me/player`;
+
+  try {
+      const res = await fetch(url, {
+      method: 'GET',
+      headers: {
+          Authorization: `Bearer ${accessToken}`,
+      },
+      });
+      const data = await res.json();
+      return data.is_playing;
+  } catch (e) {
+      throw e;
+  }
+}
+
 export async function pause(deviceId, accessToken) {
     const url = `${END_POINT}/v1/me/player/pause?device_id=${deviceId}`;
 

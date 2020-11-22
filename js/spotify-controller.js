@@ -1,17 +1,16 @@
-import { getAccessToken, getDevices, play, pause, search, resume } from './spotify.js';
+import { getAccessToken, getDevices, play, pause, search, resume, getStatus } from './spotify.js';
 
 export async function isPlayerOpen() {
-    let token = await getAccessToken();
-    let device = await getDevices(token.accessToken);
-<<<<<<< HEAD
-    if (device) {
-        return true;
-    }
-    return false;
-=======
+    const token = await getAccessToken();
+    const device = await getDevices(token.accessToken);
 
     return !!device;
->>>>>>> a84ab1b183bf3c05a333499470213127722b02a5
+}
+
+export async function isPlayerPlaying() {
+    const token = await getAccessToken();
+    return await getStatus(token.accessToken);
+    
 }
 
 export async function playerPause() {

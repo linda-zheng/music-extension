@@ -1,4 +1,4 @@
-import { isPlayerOpen, playerPlay, playerPause, playerResume } from './spotify-controller.js';
+import { isPlayerOpen, playerPlay, playerPause, playerResume, isPlayerPlaying } from './spotify-controller.js';
 
 const alert = document.getElementById('open-player-notif');
 
