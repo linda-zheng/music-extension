@@ -76,6 +76,9 @@ btnGenerate.addEventListener('submit', function(event) {
     console.log('Saved search type');
   });
 
+  const loadingEl = document.getElementById('generateLoading');
+  loadingEl.setAttribute('class', '');
+
   let payload = {
     event: 'parsePage'
   }
@@ -122,7 +125,10 @@ chrome.runtime.onMessage.addListener(
 
             console.log(listSongs, listArtists);
             let songs = listSongs.map((song, idx) => ({ name: song, artist: listArtists[idx] }));
-            playerPlay(songs);
+            playerPlay(songs).then(() => {
+              const loadingEl = document.getElementById('generateLoading');
+              loadingEl.setAttribute('class', 'd-none');
+            });
           }
         )
       })
