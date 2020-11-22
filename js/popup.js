@@ -1,4 +1,4 @@
-import { isPlayerOpen, playerPlay, playerPause, playerResume, isPlayerPlaying } from './spotify-controller.js';
+import { isPlayerOpen, playerPlay, playerPause, playerResume, isPlayerPlaying, playerCurrentSong } from './spotify-controller.js';
 
 const alert = document.getElementById('open-player-notif');
 
@@ -13,17 +13,30 @@ const btnResume = document.getElementById('resume-btn');
 const btnPause = document.getElementById('pause-btn');
 const btnQueue = document.getElementById('queue-btn');
 
+const playerSongName = document.getElementById('player-song-name');
+const playerArtistName = document.getElementById('player-artist-name');
+const playerSongImage = document.getElementById('player-song-image');
+
+async function updateCurrentSong() {
+  const currentSong = await playerCurrentSong();
+  console.log(currentSong);
+  playerSongName.innerHTML = currentSong.song;
+  playerArtistName.innerHTML = currentSong.artist;
+  playerSongImage.src = currentSong.image;
+}
+
 btnPause.onclick = async function (e) {
   console.log('pause');
-  playerPause();
+  await playerPause();
 };
 
-btnResume.onclick = function (e) {
+btnResume.onclick = async function (e) {
   console.log('resume');
-  playerResume();
+  await playerResume();
+  await updateCurrentSong();
 };
 
-btnQueue.onclick = function (e) {
+btnQueue.onclick = async function (e) {
   console.log('queue');
   const songs = [
       {name: 'love me or leave me', artist: 'day6'},
@@ -31,7 +44,7 @@ btnQueue.onclick = function (e) {
       {name: 'zombie', artist: 'day6'},
       {name: 'you were beautiful', artist: 'day6'},
   ]
-  playerPlay(songs);
+  await playerPlay(songs);
 };
 
 const btnGenerate = document.getElementById("generatePlaylist");

@@ -72,6 +72,28 @@ export async function getStatus(accessToken) {
   }
 }
 
+export async function getCurrentSong(accessToken) {
+  const url = `${END_POINT}/v1/me/player/currently-playing`;
+
+  try {
+      const res = await fetch(url, {
+      method: 'GET',
+      headers: {
+          Authorization: `Bearer ${accessToken}`,
+      },
+      });
+      const data = await res.json();
+      return {
+        is_playing: data.is_playing,
+        song: data.item.name,
+        artist: data.item.artists[0].name,
+        image: data.item.album.images[2].url
+      }
+  } catch (e) {
+      throw e;
+  }
+}
+
 export async function pause(deviceId, accessToken) {
     const url = `${END_POINT}/v1/me/player/pause?device_id=${deviceId}`;
 
