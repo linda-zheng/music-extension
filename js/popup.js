@@ -1,5 +1,13 @@
-import { playerPlay, playerPause, playerResume } from './spotify-controller.js';
+import { isPlayerOpen, playerPlay, playerPause, playerResume } from './spotify-controller.js';
 
+const alert = document.getElementById('open-player-notif');
+
+// do not show alert at first
+alert.style.display = 'none';
+
+isPlayerOpen().then((isOpen) => {
+  alert.style.display = isOpen ? 'none' : '';
+})
 
 const btnResume = document.getElementById('resume-btn');
 const btnPause = document.getElementById('pause-btn');
