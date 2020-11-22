@@ -12,8 +12,11 @@
         .shadow {
           box-shadow: 0 0 10px black inset;
         }
-        .btn-primary-spacing, .right-spacing  {
+        .btn-primary-spacing  {
           margin-right: 2px;
+        }
+        .right-spacing {
+          margin-right: 4px;
         }
         .center-absolute {
           top: 50%;
@@ -24,7 +27,7 @@
     </head>
     <body class="popup-container">
       <div class="player-body mb-3 d-none" id="extension-description">
-        <h4>Music Extension</h4>
+        <h4>WikiTunes</h4>
         <p>
           Want <em>quality</em> music but can't find the right playlist?
           Want music that's relevent to what you're browsing?
@@ -33,17 +36,23 @@
         </p>
       </div>
       <form id="generatePlaylist" class="position-relative d-none">
-        <div id="generateLoading" class="spinner-border d-none position-absolute center-absolute" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-        <div class="form-group">
-          <label for="searchTypeSelect">Select a search type</label>
-          <select class="form-control" id="searchTypeSelect">
-            <option value="tracks">Track Name</option>
-            <option value="lyrics">Lyrics</option>
-          </select>
-        </div>
-        <input class="btn btn-primary submit" type="submit" value="Generate New Playlist">
+          <div id="generateLoading" class="spinner-border d-none position-absolute center-absolute" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <div class="form-group">
+            <label for="searchTypeSelect">Select a search type</label>
+            <div class="d-flex">
+              <select class="form-control d-flex right-spacing" id="searchTypeSelect">
+                <option value="tracks">Track Name</option>
+                <option value="lyrics">Lyrics</option>
+              </select>
+              <div>
+                <input class="btn btn-primary submit d-flex" type="submit" value="Generate New Playlist">
+              </div>
+            </div>
+          </div>
+          
+        
       </form>
       <hr />
       <div class="player-body">

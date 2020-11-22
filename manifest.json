@@ -11,5 +11,8 @@
   "permissions": ["activeTab","declarativeContent", "storage", "*://*.spotify.com/"],
   "page_action": {
     "default_popup": "index.html"
+  },
+  "icons": {
+    "128":"icon.png"
   }
 }
