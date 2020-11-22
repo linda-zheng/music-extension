@@ -192,3 +192,33 @@ export async function resume(deviceId, accessToken) {
         throw e;
     }
 }
+
+export async function next(accessToken) {
+  const url = `${END_POINT}/v1/me/player/next?`;
+
+  try {
+      return await fetch(url, {
+      method: 'POST',
+      headers: {
+          Authorization: `Bearer ${accessToken}`,
+      },
+      });
+  } catch (e) {
+      throw e;
+  }
+}
+
+export async function prev(accessToken) {
+  const url = `${END_POINT}/v1/me/player/previous?`;
+
+  try {
+      return await fetch(url, {
+      method: 'POST',
+      headers: {
+          Authorization: `Bearer ${accessToken}`,
+      },
+      });
+  } catch (e) {
+      throw e;
+  }
+}

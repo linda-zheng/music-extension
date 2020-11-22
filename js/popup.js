@@ -1,4 +1,4 @@
-import { isPlayerOpen, playerPlay, playerPause, playerResume, isPlayerPlaying, playerCurrentSong } from './spotify-controller.js';
+import { isPlayerOpen, playerPlay, playerPause, playerResume, isPlayerPlaying, playerCurrentSong, playerPrev, playerNext } from './spotify-controller.js';
 
 const alert = document.getElementById('open-player-notif');
 
@@ -12,6 +12,9 @@ isPlayerOpen().then((isOpen) => {
 const btnResume = document.getElementById('resume-btn');
 const btnPause = document.getElementById('pause-btn');
 const btnQueue = document.getElementById('queue-btn');
+
+const btnPrev = document.getElementById('prev-btn');
+const btnNext = document.getElementById('next-btn');
 
 const playerSongName = document.getElementById('player-song-name');
 const playerArtistName = document.getElementById('player-artist-name');
@@ -45,6 +48,20 @@ btnQueue.onclick = async function (e) {
       {name: 'you were beautiful', artist: 'day6'},
   ]
   await playerPlay(songs);
+  await updateCurrentSong();
+};
+
+
+btnPrev.onclick = async function (e) {
+  console.log('prev');
+  await playerPrev();
+  await updateCurrentSong();
+};
+
+
+btnNext.onclick = async function (e) {
+  console.log('next');
+  await playerNext();
   await updateCurrentSong();
 };
 

@@ -1,4 +1,4 @@
-import { getAccessToken, getDevices, play, pause, search, resume, getStatus, getCurrentSong } from './spotify.js';
+import { getAccessToken, getDevices, play, pause, search, resume, getStatus, getCurrentSong, prev, next } from './spotify.js';
 
 export async function isPlayerOpen() {
     const token = await getAccessToken();
@@ -43,4 +43,14 @@ export async function playerResume(songs) {
 export async function playerCurrentSong() {
     const token = await getAccessToken();
     return await getCurrentSong(token.accessToken);
+}
+
+export async function playerNext() {
+    const token = await getAccessToken();
+    return await next(token.accessToken);
+}
+
+export async function playerPrev() {
+    const token = await getAccessToken();
+    return await prev(token.accessToken);
 }
