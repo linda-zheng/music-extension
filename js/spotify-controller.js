@@ -2,11 +2,9 @@ import { getAccessToken, getDevices, play, pause, search, resume } from './spoti
 
 export async function isPlayerOpen() {
     let token = await getAccessToken();
-    let device = await getDevices(token.accessTokens);
-    if (device) {
-        return true;
-    }
-    return false;
+    let device = await getDevices(token.accessToken);
+
+    return !!device;
 }
 
 export async function playerPause() {
