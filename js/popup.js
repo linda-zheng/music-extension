@@ -45,6 +45,7 @@ btnQueue.onclick = async function (e) {
       {name: 'you were beautiful', artist: 'day6'},
   ]
   await playerPlay(songs);
+  await updateCurrentSong();
 };
 
 const btnGenerate = document.getElementById("generatePlaylist");

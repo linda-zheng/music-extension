@@ -83,11 +83,12 @@ export async function getCurrentSong(accessToken) {
       },
       });
       const data = await res.json();
+      console.log(data);
       return {
         is_playing: data.is_playing,
         song: data.item.name,
         artist: data.item.artists[0].name,
-        image: data.item.album.images[2].url
+        image: data.item.album.images[1].url
       }
   } catch (e) {
       throw e;
