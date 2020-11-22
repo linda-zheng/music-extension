@@ -1,23 +1,29 @@
-import { play, pause, getAccessToken, getDevices } from './spotify.js';
+import { playerPlay, playerPause, playerResume } from './spotify-controller.js';
 
-const WEB_PLAYER_URL = 'https://open.spotify.com';
-const END_POINT = 'https://api.spotify.com';
-const VALID_DEVICE_TYPES = ['Computer'];
 
-const btnPlay = document.getElementById('play-btn');
+const btnResume = document.getElementById('resume-btn');
 const btnPause = document.getElementById('pause-btn');
+const btnQueue = document.getElementById('queue-btn');
 
 btnPause.onclick = async function (e) {
-    console.log('hi')
-    let token = await getAccessToken();
-    console.log(token)
-    let device = await getDevices(token.accessToken);
-    console.log(device)
-    pause(device.id, token.accessToken);
+  console.log('pause');
+  playerPause();
 };
 
-btnPlay.onclick = function (e) {
-    //
+btnResume.onclick = function (e) {
+  console.log('resume');
+  playerResume();
+};
+
+btnQueue.onclick = function (e) {
+  console.log('queue');
+  const songs = [
+      {name: 'love me or leave me', artist: 'day6'},
+      {name: 'tick tock', artist: 'day6'},
+      {name: 'zombie', artist: 'day6'},
+      {name: 'you were beautiful', artist: 'day6'},
+  ]
+  playerPlay(songs);
 };
 
 const btnGenerate = document.getElementById("generatePlaylist");

@@ -37,19 +37,17 @@ export async function getDevices(accessToken) {
     }
 }
 
-export async function getAccessToken() {
-    // Don't cache the token here
-    // there is no way the extension know whether or not user signs out to clear cache
-    // so the token in "cache" becomes invalid
+export async function getAccessToken(scope='user-modify-playback-state') {
     let token = {
       clientId: null,
       accessToken: null,
       accessTokenExpirationTimestampMs: null,
       isAnonymous: null,
     };
-  
+    //user-modify-playback-state for play and pause
+    
     try {
-      const url = `${WEB_PLAYER_URL}/get_access_token`;
+      const url = `${WEB_PLAYER_URL}/get_access_token?q=scope:user-modify-playback-state`;
       const res = await fetch(url);
       token = await res.json();
     } catch {}
@@ -57,46 +55,6 @@ export async function getAccessToken() {
     return token;
 }
 
-export async function getCurrentPlayBack(accessToken) {
-    const url = `${END_POINT}/v1/me/player?additional_types=track`;
-  
-    try {
-      const res = await fetch(url, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-  
-      const data = await res.json();
-      return data;
-    } catch (e) {
-      return;
-    }
-}
-  
-export async function getRecentlyPlayedTrack(accessToken) {
-    const url = `${END_POINT}/v1/me/player/recently-played`;
-  
-    try {
-      const res = await fetch(url, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-  
-      let data = await res.json();
-  
-      if (data && data.items.length) {
-        const { track: item, context } = data.items[0];
-        return { item, context };
-      }
-  
-      return;
-    } catch (e) {
-      return;
-    }
-}
-  
 export async function pause(deviceId, accessToken) {
     const url = `${END_POINT}/v1/me/player/pause?device_id=${deviceId}`;
 
@@ -113,11 +71,52 @@ export async function pause(deviceId, accessToken) {
     }
 }
 
-export async function play(songInfo, deviceId, accessToken) {
+export async function search(track, artist, accessToken) {
+    let encoded_track = encodeURIComponent(track)
+    let encoded_artist = encodeURIComponent(artist)
+    const url = `${END_POINT}/v1/search?q=track:${encoded_track}%20artist:${encoded_artist}&type=track&limit=1`;
+
+    try {
+        const result = await fetch(url, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+        });
+        
+        const result_json = await result.json();
+        console.log(result_json)
+        if (result_json.tracks.items.length == 0) {
+            return null;
+        } else {
+            return result_json.tracks.items[0].uri;
+        }
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function queue(uri, deviceId, accessToken) {
+    const url = `${END_POINT}/v1/me/player/queue?uri=${uri}&device_id=${deviceId}`;
+
+    try {
+        const result = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+        });
+        return result;
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function play(songURIs, deviceId, accessToken) {
     const url = `${END_POINT}/v1/me/player/play?device_id=${deviceId}`;
 
     const postData = {
-        position_ms: songInfo.progressMs, // the time that current plays
+        uris: songURIs
     };
 
     try {
@@ -134,85 +133,14 @@ export async function play(songInfo, deviceId, accessToken) {
     }
 }
 
-export async function next(deviceId, accessToken) {
-    const url = `${END_POINT}/v1/me/player/next?device_id=${deviceId}`;
-
-    try {
-        return await fetch(url, {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-        },
-        });
-    } catch (e) {
-        throw e;
-    }
-}
-
-export async function prev(deviceId, accessToken) {
-    const url = `${END_POINT}/v1/me/player/previous?device_id=${deviceId}`;
-
-    try {
-        return await fetch(url, {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-        },
-        });
-    } catch (e) {
-        throw e;
-    }
-}
-
-export async function checkSavedTrack(accessToken, ids) {
-    const url = `${END_POINT}/v1/me/tracks/contains?ids=${ids}`;
-
-    try {
-        const res = await fetch(url, {
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-        },
-        });
-        const data = await res.json();
-
-        return data[0];
-    } catch (e) {
-        return;
-    }
-}
-
-export async function saveTrack(songInfo, accessToken) {
-    const url = `${END_POINT}/v1/me/tracks`;
-
-    const postData = {
-        ids: [songInfo.id],
-    };
+export async function resume(deviceId, accessToken) {
+    const url = `${END_POINT}/v1/me/player/play?device_id=${deviceId}`;
 
     try {
         return await fetch(url, {
         method: 'PUT',
-        body: JSON.stringify(postData),
         headers: {
-            Authorization: `Bearer ${accessToken}`,
-        },
-        });
-    } catch (e) {
-        throw e;
-    }
-}
-
-export async function removeTrack(songInfo, accessToken) {
-    const url = `${END_POINT}/v1/me/tracks`;
-
-    const postData = {
-        ids: [songInfo.id],
-    };
-
-    try {
-        return await fetch(url, {
-        method: 'DELETE',
-        body: JSON.stringify(postData),
-        headers: {
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${accessToken}`,
         },
         });
