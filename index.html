@@ -24,8 +24,20 @@
           Well we've got the thing for you!<br>
           Generate a playlist today that uses YOUR current webpage to find unique tunes.
         </p>
-        <button id="generatePlaylist" class="btn btn-primary submit">Generate New Playlist</button>
       </div>
+
+      <hr />
+
+      <form id="generatePlaylist">
+        <div class="form-group">
+          <label for="searchTypeSelect">Select a search type</label>
+          <select class="form-control" id="searchTypeSelect">
+            <option value="tracks">Track Name</option>
+            <option value="lyrics">Lyrics</option>
+          </select>
+        </div>
+        <input class="btn btn-primary submit" type="submit" value="Generate New Playlist">
+      </form>
 
       <div class="player-body">
         <div id="open-player-notif" class="player-notif alert alert-danger" role="alert">
