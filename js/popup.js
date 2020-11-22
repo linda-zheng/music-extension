@@ -23,6 +23,7 @@ const togglePlayPauseIcons = (isPlaying) => {
 }
 
 isPlayerPlaying().then(togglePlayPauseIcons);
+updateCurrentSong();
 
 const btnPrev = document.getElementById('prev-btn');
 const btnNext = document.getElementById('next-btn');
