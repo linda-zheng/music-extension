@@ -3,7 +3,7 @@
     <head>
       <style>
         .popup-container {
-          width: 350px;
+          width: 400px;
           padding: 12px;
         }
         .music-actions-container {
@@ -23,17 +23,16 @@
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     </head>
     <body class="popup-container">
-      <div class="player-body mb-3">
+      <div class="player-body mb-3 d-none" id="extension-description">
         <h4>Music Extension</h4>
         <p>
-          Want to listen to <em>quality</em> music but can't find the right playlist?<br>
-          Want to listen to music relevent to what you're browsing?<br>
+          Want <em>quality</em> music but can't find the right playlist?
+          Want music that's relevent to what you're browsing?
           Well we've got the thing for you!<br>
-          Generate a playlist today that uses YOUR current webpage to find unique tunes.
+          Generate a playlist today that uses your current webpage to find unique tunes.
         </p>
       </div>
-      <hr />
-      <form id="generatePlaylist" class="position-relative">
+      <form id="generatePlaylist" class="position-relative d-none">
         <div id="generateLoading" class="spinner-border d-none position-absolute center-absolute" role="status">
           <span class="sr-only">Loading...</span>
         </div>

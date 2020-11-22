@@ -2,6 +2,8 @@ import { isPlayerOpen, playerPause, playerResume, isPlayerPlaying, playerCurrent
 
 const alert = document.getElementById('open-player-notif');
 const musicPlayer = document.getElementById('music-player');
+const extensionDescription = document.getElementById('extension-description');
+const generatePlaylist = document.getElementById('generatePlaylist');
 
 const btnResume = document.getElementById('resume-btn');
 const btnPause = document.getElementById('pause-btn');
@@ -18,13 +20,17 @@ alert.style.display = 'none';
 isPlayerOpen().then((isOpen) => {
   if (isOpen) {
     alert.style.display = 'none';
+    extensionDescription.classList.add('d-none');
     musicPlayer.classList.remove('d-none');
     musicPlayer.classList.add('d-flex');
+    generatePlaylist.classList.remove('d-none');
     updateCurrentSong();
   } else {
     alert.style.display = '';
+    extensionDescription.classList.remove('d-none');
     musicPlayer.classList.remove('d-flex');
     musicPlayer.classList.add('d-none');
+    generatePlaylist.classList.add('d-none');
   }
 })
 
