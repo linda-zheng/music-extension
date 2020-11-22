@@ -1,4 +1,4 @@
-import { isPlayerOpen, playerPlay, playerPause, playerResume, isPlayerPlaying } from './spotify-controller.js';
+import { isPlayerOpen, playerPlay, playerPause, playerResume, isPlayerPlaying, playerCurrentSong, playerPrev, playerNext } from './spotify-controller.js';
 
 const alert = document.getElementById('open-player-notif');
 const btnResume = document.getElementById('resume-btn');
@@ -24,28 +24,47 @@ const togglePlayPauseIcons = (isPlaying) => {
 
 isPlayerPlaying().then(togglePlayPauseIcons);
 
+const btnPrev = document.getElementById('prev-btn');
+const btnNext = document.getElementById('next-btn');
+
+const playerSongName = document.getElementById('player-song-name');
+const playerArtistName = document.getElementById('player-artist-name');
+const playerSongImage = document.getElementById('player-song-image');
+
+async function updateCurrentSong() {
+  const currentSong = await playerCurrentSong();
+  console.log(currentSong);
+  playerSongName.innerHTML = currentSong.song;
+  playerArtistName.innerHTML = currentSong.artist;
+  playerSongImage.src = currentSong.image;
+}
+
 btnPause.onclick = async function (e) {
   console.log('pause');
   togglePlayPauseIcons(false);
-  playerPause();
+  await playerPause();
+  await updateCurrentSong();
 };
 
-btnResume.onclick = function (e) {
+btnResume.onclick = async function (e) {
   console.log('resume');
   togglePlayPauseIcons(true);
-  playerResume();
+  await playerResume();
+  await updateCurrentSong();
 };
 
-// btnQueue.onclick = function (e) {
-//   console.log('queue');
-//   const songs = [
-//       {name: 'love me or leave me', artist: 'day6'},
-//       {name: 'tick tock', artist: 'day6'},
-//       {name: 'zombie', artist: 'day6'},
-//       {name: 'you were beautiful', artist: 'day6'},
-//   ]
-//   playerPlay(songs);
-// };
+btnPrev.onclick = async function (e) {
+  console.log('prev');
+  await playerPrev();
+  await updateCurrentSong();
+};
+
+
+btnNext.onclick = async function (e) {
+  console.log('next');
+  await playerNext();
+  await updateCurrentSong();
+};
 
 const btnGenerate = document.getElementById("generatePlaylist");
 btnGenerate.addEventListener("click", function() {

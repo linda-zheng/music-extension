@@ -72,6 +72,29 @@ export async function getStatus(accessToken) {
   }
 }
 
+export async function getCurrentSong(accessToken) {
+  const url = `${END_POINT}/v1/me/player/currently-playing`;
+
+  try {
+      const res = await fetch(url, {
+      method: 'GET',
+      headers: {
+          Authorization: `Bearer ${accessToken}`,
+      },
+      });
+      const data = await res.json();
+      console.log(data);
+      return {
+        is_playing: data.is_playing,
+        song: data.item.name,
+        artist: data.item.artists[0].name,
+        image: data.item.album.images[1].url
+      }
+  } catch (e) {
+      throw e;
+  }
+}
+
 export async function pause(deviceId, accessToken) {
     const url = `${END_POINT}/v1/me/player/pause?device_id=${deviceId}`;
 
@@ -168,4 +191,34 @@ export async function resume(deviceId, accessToken) {
     } catch (e) {
         throw e;
     }
+}
+
+export async function next(accessToken) {
+  const url = `${END_POINT}/v1/me/player/next?`;
+
+  try {
+      return await fetch(url, {
+      method: 'POST',
+      headers: {
+          Authorization: `Bearer ${accessToken}`,
+      },
+      });
+  } catch (e) {
+      throw e;
+  }
+}
+
+export async function prev(accessToken) {
+  const url = `${END_POINT}/v1/me/player/previous?`;
+
+  try {
+      return await fetch(url, {
+      method: 'POST',
+      headers: {
+          Authorization: `Bearer ${accessToken}`,
+      },
+      });
+  } catch (e) {
+      throw e;
+  }
 }
